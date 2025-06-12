@@ -3,7 +3,7 @@
 **Purpose:** This repository contains the scripts for simulating and analyzing data in context of a research intership.
 
 
-## Simualtion of Data from related study
+## Simulation of Data from related study
 
 **File**: 01_sim_Lehle_et_al_2009
 
