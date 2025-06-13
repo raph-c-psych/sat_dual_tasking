@@ -220,16 +220,14 @@ accuracy_change_plot <- ggplot(data = sim_data) +
     arrow = arrow(length = unit(1, "cm")),
     size = 1.3,
     color = "black",
-    linetype = "dashed",
-    alpha = 0.5
+    linetype = "dashed"
   ) +
   geom_segment( # SAT
     aes(x = - 2.8, y = 2.8, xend = 2.8, yend =  -2.8),
     arrow = arrow(length = unit(1, "cm")),
     size = 1.3,
     color = "black",
-    linetype = "dashed",
-    alpha = 0.5
+    linetype = "dashed"
   ) +
   geom_segment( # left arrow
     aes(x = 0, y = -1, xend = -1, yend = -2),
@@ -261,40 +259,39 @@ accuracy_change_plot <- ggplot(data = sim_data) +
     hjust = 1.1, 
     vjust = 1.1, 
     size = 9, 
-    angle = 45,
-    alpha = 0.5
+    angle = 45
   ) +
-  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45, alpha = 0.5) +
-  annotate( # 1
+  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45) +
+  annotate( # C
     "text", 
     x = -0.8, 
     y = -2.1, 
-    label = "(1)",  
+    label = "(C)",  
     hjust = 1.1, 
     vjust = 1.1, 
     size = 9
   ) +
-  annotate( # 2
+  annotate( # B
     "text", 
     x = 0.2, 
     y = - 2.1, 
-    label = "(2)",  
+    label = "(B)",  
     hjust = 1.1, 
     vjust = 1.1, 
     size = 9
   ) +
-  annotate( # 3
+  annotate( # A
     "text", 
     x = 1.2, 
     y = -2.1, 
-    label = "(3)",  
+    label = "(A)",  
     hjust = 1.1, 
     vjust = 1.1, 
     size = 9
   ) +
   # Labeling of axis and legend
   labs(
-    title = "Visualisierung der Veränderungen in Genauigkeit",
+    title = "Visualisierung der Veränderung der Genauigkeit",
     x = "Reaktionszeit (z-standardisiert)", 
     y = "Fehlerrate (z-standardisiert)", 
     shape = "Strategie"
