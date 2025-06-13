@@ -139,7 +139,7 @@ score_plot <- ggplot(data = sim_data) +
 
   # Labeling of axis and legend
   labs(
-    title = "Visualisierung der Maße an Aufgabe 1",
+    title = "Visualisierung der Maße",
     x = "Reaktionszeit (z-standardisiert)", 
     y = "Fehlerrate (z-standardisiert)", 
     shape = "Strategie"
@@ -193,6 +193,161 @@ plot_path <- paste0("Plots/score_plot.jpg")
 ggsave(
   filename = plot_path,
   plot = score_plot,
+  width = 13,    # in inches 
+  height = 10,    
+  dpi = 300      # resolution
+)
+
+# Open the plot (macOS command)
+system2("open", args = shQuote(plot_path))
+
+
+
+# ========= plot: visualizing changes in accuracy  =========
+
+accuracy_change_plot <- ggplot(data = sim_data) + 
+  # scatter plot of data
+  geom_point(
+    aes(x = scale(RT_1), y = scale(ER_1), shape = strategy),
+    color = "black",
+    size = 3.5,
+    alpha = 0.5
+  ) +
+  
+  # vectors and their annotation
+  geom_segment( # BIS
+    aes(x = 2.8, y = 2.8, xend = -2.8, yend = -2.8),
+    arrow = arrow(length = unit(1, "cm")),
+    size = 1.3,
+    color = "black",
+    linetype = "dashed",
+    alpha = 0.5
+  ) +
+  geom_segment( # SAT
+    aes(x = - 2.8, y = 2.8, xend = 2.8, yend =  -2.8),
+    arrow = arrow(length = unit(1, "cm")),
+    size = 1.3,
+    color = "black",
+    linetype = "dashed",
+    alpha = 0.5
+  ) +
+  geom_segment( # left arrow
+    aes(x = 0, y = -1, xend = -1, yend = -2),
+    arrow = arrow(length = unit(0.5, "cm")),
+    size = 1.3,
+    color = "black",
+    linetype = "twodash"
+  ) +
+  geom_segment( # middle arrow
+    aes(x = 0, y = -1, xend = 0, yend = -2),
+    arrow = arrow(length = unit(0.5, "cm")),
+    size = 1.3,
+    color = "black",
+    linetype = "twodash"
+  ) +
+  geom_segment( # right arrow
+    aes(x = 0, y = -1, xend = 1, yend = - 2),
+    arrow = arrow(length = unit(0.5, "cm")),
+    size = 1.3,
+    color = "black",
+    linetype = "twodash"
+  ) +
+  
+  annotate( # BIS
+    "text", 
+    x = -1.7, 
+    y = -1.1, 
+    label = "Leistung (BIS)",  
+    hjust = 1.1, 
+    vjust = 1.1, 
+    size = 9, 
+    angle = 45,
+    alpha = 0.5
+  ) +
+  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45, alpha = 0.5) +
+  annotate( # 1
+    "text", 
+    x = -0.8, 
+    y = -2.1, 
+    label = "(1)",  
+    hjust = 1.1, 
+    vjust = 1.1, 
+    size = 9
+  ) +
+  annotate( # 2
+    "text", 
+    x = 0.2, 
+    y = - 2.1, 
+    label = "(2)",  
+    hjust = 1.1, 
+    vjust = 1.1, 
+    size = 9
+  ) +
+  annotate( # 3
+    "text", 
+    x = 1.2, 
+    y = -2.1, 
+    label = "(3)",  
+    hjust = 1.1, 
+    vjust = 1.1, 
+    size = 9
+  ) +
+  # Labeling of axis and legend
+  labs(
+    title = "Visualisierung der Veränderungen in Genauigkeit",
+    x = "Reaktionszeit (z-standardisiert)", 
+    y = "Fehlerrate (z-standardisiert)", 
+    shape = "Strategie"
+  ) +
+  
+  # scaling axis to be the same and setting ticks
+  coord_fixed(ratio = 1) +
+  scale_x_continuous(
+  limits = c(-3, 3),
+  breaks = seq(-3, 3, by = 1)
+  ) +
+  scale_y_continuous(
+    limits = c(-3, 3),
+    breaks = seq(-3, 3, by = 1)
+  ) +
+  
+  # setting theme
+  theme_minimal() +
+  theme(
+    # background
+    panel.background  = element_rect(fill = "white", color = NA),
+    plot.background   = element_rect(fill = "white", color = NA),
+    panel.grid        = element_blank(),
+    
+    # keep standard axis
+    axis.line         = element_line(color = "black", size = 1),
+    
+    # sizing of elements
+    plot.title = element_text(size = 30, face = "bold", color = "black", hjust = 0.5),
+    axis.title.x      = element_text(size = 26, face = "bold", color = "black"),
+    axis.title.y      = element_text(size = 26, face = "bold", color = "black"),
+    axis.text         = element_text(size = 26, color = "black"),
+    legend.title      = element_text(size = 26, face = "bold", color = "black"),
+    legend.text       = element_text(size = 26, color = "black"),
+    axis.ticks        = element_line(size = 1, color = "black"),
+
+    # add arrow heads to the axis lines
+    axis.line.x = element_line(
+      color = "black",
+      arrow = arrow(length = unit(0.7, "cm"))
+    ),
+    axis.line.y = element_line(
+      color = "black",
+      arrow = arrow(length = unit(0.7, "cm"))
+    ),
+    panel.border = element_blank()
+  )
+
+# saving plot
+plot_path <- paste0("Plots/accuracy_change_plot.jpg")
+ggsave(
+  filename = plot_path,
+  plot = accuracy_change_plot,
   width = 13,    # in inches 
   height = 10,    
   dpi = 300      # resolution
