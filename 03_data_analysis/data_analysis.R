@@ -423,6 +423,9 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec) {
       axis.text         = element_text(size = 17, color = "black"),
       axis.ticks        = element_line(size = 1, color = "black"),
       axis.ticks.length = unit(0.2, "cm"),
+      legend.title      = element_text(size = 17, face = "bold", color = "black"),
+      legend.text       = element_text(size = 17, color = "black"),
+      legend.key.size   = unit(1.2, "lines"), # spacing, not shape size!
 
       # add arrow heads to the axis lines
       axis.line.y = element_line(
