@@ -24,6 +24,8 @@ Lehle, C., Steinhauser, M., & Hübner, R. (2009). Serial or parallel processing 
 
 ## 3. Data Analysis of own Research Questions (03_data_analysis)
 
+**Files:**
+
 - **data_analysis.R:** file for analysing data (contains exclusion of outliers, generating plots, inferential testing and a-posteriori power analysis)
 - **overview_plot.jpg:** shows the results of reaction time, errror rate, Balanced Integration Score and Speed-Accuracy Trade-Off between independent variables of strategy & instruction
 
