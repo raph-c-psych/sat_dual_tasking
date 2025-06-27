@@ -116,7 +116,8 @@ score_plot <- ggplot(data = sim_data) +
   geom_point(
     aes(x = scale(RT_1), y = scale(ER_1), shape = strategy),
     color = "black",
-    size = 3.5
+    size = 3.5,
+    alpha = 0.5
   ) +
   
   # vectors and their annotation
