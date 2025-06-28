@@ -39,14 +39,22 @@
 
 # ----- load packages -----
 
+# for general processing
 library(tidyverse)
+# standard import
 library(psych)
+# for anova
 library(afex)
+# for arranging plots
 library(patchwork)
+# for calculating post hoc power
 library(effectsize)
 library(pwr)
+# for outputting tables in console
 library(knitr)
-
+# for exporting tables
+library(gt)
+library(webshot2)
 
 
 # ---- loading data frames ----
@@ -507,6 +515,20 @@ aov_accuracy_2 <- aov_ez(
 aov_accuracy_1
 aov_accuracy_2
 
+# saving results as tables
+aov_accuracy_1$anova_table |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "Effekt") |>
+  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
+  gt() |>
+  gtsave("03_data_analysis/results/Genauigkeitstendenz_1.png")
+aov_accuracy_2$anova_table |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "Effekt") |>
+  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
+  gt() |>
+  gtsave("03_data_analysis/results/Genauigkeitstendenz_2.png")
+
 
 
 # ---- ANOVAs for BIS ----
@@ -533,7 +555,19 @@ aov_bis_2 <- aov_ez(
 aov_bis_1
 aov_bis_2
 
-
+# saving results as tables
+aov_bis_1$anova_table |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "Effekt") |>
+  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
+  gt() |>
+  gtsave("03_data_analysis/results/BIS_1.png")
+aov_bis_2$anova_table |>
+  as.data.frame() |>
+  tibble::rownames_to_column(var = "Effekt") |>
+  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
+  gt() |>
+  gtsave("03_data_analysis/results/BIS_2.png")
 
 
 
