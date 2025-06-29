@@ -29,9 +29,10 @@
 # part 1: processing data set
 # part 2: checking and removing outliers
 # part 3: calculating new measures (SAT & BIS)
-# part 4: visualizing resulsts
-# part 5: testing with inference statistics
-# part 6: a posteriori power analysis
+# part 4: exporting final data set in wide
+# part 5: visualizing resulsts
+# part 6: testing with inference statistics
+# part 7: post hoc power analysis
 
 
 
@@ -41,6 +42,8 @@
 
 # for general processing
 library(tidyverse)
+# for exporting sav
+library(haven)
 # standard import
 library(psych)
 # for anova
@@ -325,8 +328,21 @@ data_set_rt_er_long <- data_set_rt_er_long |>
 
 
 
+# ========== part 4: exporting final data set in wide ==========
 
-# ========== part 4: visualizing resulsts ==========
+# exporting data set with BIS & SAT in wide format
+data_set_rt_er_long |>
+  pivot_wider(
+    id_cols = c(ID, Instruktion, Reihenfolge),
+    names_from = Strategie,
+    values_from = c(BIS_1, BIS_2, Genauigkeitstendenz_1, Genauigkeitstendenz_2)
+  ) |>
+  write.csv("../data_sets_empra/data_raph/data_BIS_SAT.csv")
+
+
+
+
+# ========== part 5: visualizing resulsts ==========
 
 # ---- visualizing SAT and BIS over z-standardised variables ----
 
@@ -489,7 +505,7 @@ system2("open", args = shQuote(plot_path_overview))
 
 
 
-# ========= part 5: testing with inference statistics =========
+# ========= part 6: testing with inference statistics =========
 
 # ---- ANOVAs for SAT ----
 
@@ -571,7 +587,7 @@ aov_bis_2$anova_table |>
 
 
 
-# ========== part 6: a posteriori power analysis ==========
+# ========== part 7: post hoc power analysis ==========
 
 # function to output effectsize, power and beta error for alpha-level
 power_from_aov_ez <- function(aov_result, title_of_table, sig_level = 0.05) {
