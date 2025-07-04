@@ -390,10 +390,10 @@ sim_data_summary <- sim_data |>
 # ========== plots: visualizing different groups ==========
 
 # factoring strategy and instruction to order their levels for plots later
-sim_data_summary <- sim_data_summary |>
-  mutate(
-    strategy = factor(strategy, levels = c("seriell", "parallel"))
-  )
+#sim_data_summary <- sim_data_summary |>
+#  mutate(
+#    strategy = factor(strategy, levels = c("seriell", "parallel"))
+#  )
 
 
 # function for creating plots
