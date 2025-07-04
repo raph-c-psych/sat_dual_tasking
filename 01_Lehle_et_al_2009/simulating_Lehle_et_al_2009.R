@@ -136,11 +136,10 @@ score_plot <- ggplot(data = sim_data) +
     linetype = "dashed"
   ) +
   annotate("text", x = -1.7, y = -1.1, label = "Leistung (BIS)",  hjust = 1.1, vjust = 1.1, size = 9, angle = 45) +
-  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45) +
+  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz (rSATS)",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45) +
 
   # Labeling of axis and legend
   labs(
-    title = "Visualisierung der Maße",
     x = "Reaktionszeit (z-standardisiert)", 
     y = "Fehlerrate (z-standardisiert)", 
     shape = "Strategie"
@@ -190,7 +189,7 @@ score_plot <- ggplot(data = sim_data) +
   )
 
 # saving plot
-plot_path <- paste0("01_Lehle_et_al_2009/plots/score_plot.jpg")
+plot_path <- paste0("01_Lehle_et_al_2009/plots/01_score_visualization.jpg")
 ggsave(
   filename = plot_path,
   plot = score_plot,
@@ -262,7 +261,7 @@ accuracy_change_plot <- ggplot(data = sim_data) +
     size = 9, 
     angle = 45
   ) +
-  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45) +
+  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz (rSATS)",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45) +
   annotate( # C
     "text", 
     x = -0.8, 
@@ -292,7 +291,6 @@ accuracy_change_plot <- ggplot(data = sim_data) +
   ) +
   # Labeling of axis and legend
   labs(
-    title = "Visualisierung der Veränderung der Genauigkeit",
     x = "Reaktionszeit (z-standardisiert)", 
     y = "Fehlerrate (z-standardisiert)", 
     shape = "Strategie"
@@ -342,7 +340,7 @@ accuracy_change_plot <- ggplot(data = sim_data) +
   )
 
 # saving plot
-plot_path <- paste0("01_Lehle_et_al_2009/plots/accuracy_change_plot.jpg")
+plot_path <- paste0("01_Lehle_et_al_2009/plots/02_accuracy_change_visualization.jpg")
 ggsave(
   filename = plot_path,
   plot = accuracy_change_plot,
@@ -455,14 +453,14 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec) {
 # specifying the Plots
 plot_specs <- tribble(
   ~var, ~title, ~ylab, ~ylim_vec,
-  "RT_1", "Reaktionszeit (Auf. 1)", "RT (ms)", c(500, 1300),
-  "RT_2", "Reaktionszeit (Auf. 2)", "RT (ms)", c(500, 1300),
-  "ER_1", "Fehlerrate (Auf. 1)", "Error Rate (%)", c(0, 8),
-  "ER_2", "Fehlerrate (Auf. 2)", "Error Rate (%)", c(0, 8),
-  "BIS_1", "Balanced Integration Score (Auf. 1)", "BIS", c(-1, 1),
-  "BIS_2", "Balanced Integration Score (Auf. 2)", "BIS", c(-1,  1),
-  "accuracy_bias_1", "Genauigkeitstendenz (Auf. 1)", "Genauigkeitstendenz", c(-1, 1),
-  "accuracy_bias_2", "Genauigkeitstendenz (Auf. 2)", "Genauigkeitstendenz", c(-1, 1)
+  "RT_1", "A) Reaktionszeit (Auf. 1)", "RT (ms)", c(500, 1300),
+  "RT_2", "B) Reaktionszeit (Auf. 2)", "RT (ms)", c(500, 1300),
+  "ER_1", "C) Fehlerrate (Auf. 1)", "Error Rate (%)", c(0, 8),
+  "ER_2", "D) Fehlerrate (Auf. 2)", "Error Rate (%)", c(0, 8),
+  "BIS_1", "E) Balanced Integration Score (Auf. 1)", "BIS", c(-1.2, 1.2),
+  "BIS_2", "F) Balanced Integration Score (Auf. 2)", "BIS", c(-1.2,  1.2),
+  "accuracy_bias_1", "G) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-1.2, 1.2),
+  "accuracy_bias_2", "H) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-1.2, 1.2)
 )
 
 # creating all the plots
@@ -480,7 +478,7 @@ final_dashboard <-
   (all_plots[[7]] | all_plots[[8]])
 
 # saving plot
-plot_path <- "01_Lehle_et_al_2009/plots/Lehle_comparison.jpg"
+plot_path <- "01_Lehle_et_al_2009/plots/03_lehle_visualization.jpg"
 ggsave(
   filename = plot_path,
   plot = final_dashboard,

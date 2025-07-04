@@ -32,7 +32,7 @@
 # part 4: exporting final data set in wide
 # part 5: visualizing resulsts
 # part 6: testing with inference statistics
-# part 7: post hoc power analysis
+# part 7: post hoc power analysis & partial eta square
 
 
 
@@ -63,10 +63,10 @@ library(webshot2)
 # ---- loading data frames ----
 
 # error rates and reaction times (trials with errors included)
-data_set_rt_er <- read_csv("../data_sets_empra/data_raph/data_RT_ER_all_wide.csv")
+# data_set_rt_er <- read_csv("../data_sets_empra/data_raph/data_RT_ER_all_wide.csv")
 
 # data frame with rt only from correct trials
-# data_set_rt_er <- read_csv("own_data_analysis/data_sets/dataRTFehler_wide.csv")
+data_set_rt_er <- read_csv("../data_sets_empra/data_raph/dataRTFehler_wide.csv")
 
 
 
@@ -176,7 +176,7 @@ data_set_rt_er_long <- data_set_rt_er_long |>
 # removing 09 from the start
 # used for data set with rts only from correct trials; 09 has missing values
 # data_set_rt_er_long <- data_set_rt_er_long |>
-#  filter(!ID %in% c("09"))
+#   filter(!ID %in% c("09"))
 
 
 
@@ -250,7 +250,7 @@ print(outliers_table_iqr_inside, n = Inf, width = Inf)
 # congruency differed:  9, 12, 16
 # congruency collapsed: 9, 12, 13
 
-
+# new analysis: 9, 12, 16 (congruency differed)
 
 # ---- 4) checking outliers (over all groups): 1,5 interquartile range from upper and lower quartile for each measure ----
 
@@ -282,7 +282,7 @@ print(outliers_table_iqr_over, n = Inf, width = Inf)
 # congruency differed:  9, 12, 13, 16
 # congruency collapsed: 9,12, 14, 16 
 
-
+# new analysis: 09, 12, 13, 16 congruency differed
 
 # ---- decision of outliers ----
 
@@ -300,9 +300,10 @@ data_set_rt_er_long_pre_exl <- data_set_rt_er_long
 # data_set_rt_er_long <- data_set_rt_er_long_pre_exl # if necessary
 
 # removing outliers
+# data_set_rt_er_long <- data_set_rt_er_long |> # from data set with false response rts
+#   filter(!ID %in% c("09", "12", "16"))
 data_set_rt_er_long <- data_set_rt_er_long |>
-  filter(!ID %in% c("09", "12", "16"))
-
+  filter(!ID %in% c("09", "12", "16")) # 13?
 
 
 
@@ -337,7 +338,7 @@ data_set_rt_er_long |>
     names_from = Strategie,
     values_from = c(BIS_1, BIS_2, Genauigkeitstendenz_1, Genauigkeitstendenz_2)
   ) |>
-  write.csv("../data_sets_empra/data_raph/data_BIS_SAT.csv")
+  write.csv("../data_sets_empra/data_raph/data_SAT.csv")
 
 
 
@@ -389,14 +390,14 @@ summary_data <- data_set_rt_er_long |>
     sd_wert = sd(Wert, na.rm = TRUE),
     n = n(),
     se_wert = sd_wert / sqrt(n),
-    ci_lower = mean_wert - qt(0.975, df = n-1) * se_wert,
-    ci_upper = mean_wert + qt(0.975, df = n-1) * se_wert,
+    ci_lower = mean_wert - qt(0.95, df = n-1) * se_wert, # 90 %-iges confidende intervall
+    ci_upper = mean_wert + qt(0.95, df = n-1) * se_wert, # 90 %-iges Konfidenzintervall
     .groups = "drop"
   )
 
 
 # function for creating individual plots
-make_metric_plot <- function(data, var, title, ylab, ylim_vec) {
+make_metric_plot <- function(data, var, title, ylab, ylim_vec, legend_pos) {
   # basic plot
   p <- data |> 
     filter(Variable == var) |>
@@ -447,6 +448,7 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec) {
       axis.text         = element_text(size = 17, color = "black"),
       axis.ticks        = element_line(size = 1, color = "black"),
       axis.ticks.length = unit(0.2, "cm"),
+      legend.position   = legend_pos,
       legend.title      = element_text(size = 17, face = "bold", color = "black"),
       legend.text       = element_text(size = 17, color = "black"),
       legend.key.size   = unit(1.2, "lines"), # spacing, not shape size!
@@ -463,22 +465,22 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec) {
 
 # specifying the plots
 plot_specs <- tribble(
-  ~var, ~title, ~ylab, ~ylim_vec,
-  "RT1", "Reaktionszeit (Auf. 1)", "RT (ms)", c(700, 1650),
-  "RT2", "Reaktionszeit (Auf. 2)", "RT (ms)", c(700, 1650),
-  "ER1", "Fehlerrate (Auf. 1)", "Error Rate (%)", c(0, 13),
-  "ER2", "Fehlerrate (Auf. 2)", "Error Rate (%)", c(0, 13),
-  "BIS_1", "Balanced Integration Score (Auf. 1)", "BIS", c(-3.2, 3.2),
-  "BIS_2", "Balanced Integration Score (Auf. 2)", "BIS", c(-3.2,  3.2),
-  "Genauigkeitstendenz_1", "Genauigkeitstendenz (Auf. 1)", "Genauigkeitstendenz", c(-2.2, 2.2),
-  "Genauigkeitstendenz_2", "Genauigkeitstendenz (Auf. 2)", "Genauigkeitstendenz", c(-2.2, 2.2)
+  ~var, ~title, ~ylab, ~ylim_vec, ~legend_pos, 
+  "RT1", "A) Reaktionszeit (Auf. 1)", "RT (ms)", c(700, 1650), "none",
+  "RT2", "B) Reaktionszeit (Auf. 2)", "RT (ms)", c(700, 1650), "right",
+  "ER1", "C) Fehlerrate (Auf. 1)", "Error Rate (%)", c(0, 13), "none",
+  "ER2", "D) Fehlerrate (Auf. 2)", "Error Rate (%)", c(0, 13), "right",
+  "BIS_1", "E) Balanced Integration Score (Auf. 1)", "BIS", c(-2.6, 2.6), "none",
+  "BIS_2", "F) Balanced Integration Score (Auf. 2)", "BIS", c(-2.6, 2.6), "right",
+  "Genauigkeitstendenz_1", "G) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-2.6, 2.6), "none",
+  "Genauigkeitstendenz_2", "H) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-2.6, 2.6), "right"
 )
 
 # creating all the plots
 all_plots <- purrr::pmap(
   plot_specs,
-  function(var, title, ylab, ylim_vec) {
-    make_metric_plot(summary_data, var, title, ylab, ylim_vec)
+  function(var, title, ylab, ylim_vec, legend_pos) {
+    make_metric_plot(summary_data, var, title, ylab, ylim_vec, legend_pos)
   }
 )
 
@@ -501,6 +503,42 @@ ggsave(
 
 # Open the plot (macOS command)
 system2("open", args = shQuote(plot_path_overview))
+
+
+# ---- visualizing SAT in task 1 & 2 -----
+
+# specifying the plots
+plot_specs_sat <- tribble(
+  ~var, ~title, ~ylab, ~ylim_vec, ~legend_pos, 
+  "Genauigkeitstendenz_1", "A) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-2.6, 2.6), "none",
+  "Genauigkeitstendenz_2", "B) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-2.6, 2.6), "right"
+)
+
+# creating all the plots
+plots_sat <- purrr::pmap(
+  plot_specs_sat,
+  function(var, title, ylab, ylim_vec, legend_pos) {
+    make_metric_plot(summary_data, var, title, ylab, ylim_vec, legend_pos)
+  }
+)
+
+# arranging all the plots in overview plot
+overview_sat_plot <- 
+  (plots_sat[[1]] | plots_sat[[2]])
+
+# saving overview plot
+sat_plot_path_overview <- "03_data_analysis/results/sat_results_plot.jpg"
+ggsave(
+  filename = sat_plot_path_overview,
+  plot = overview_sat_plot,
+  width = 12,    # in inches 
+  height = 5,    
+  dpi = 300      # resolution
+)
+
+# Open the plot (macOS command)
+system2("open", args = shQuote(sat_plot_path_overview))
+
 
 
 
@@ -547,47 +585,9 @@ aov_accuracy_2$anova_table |>
 
 
 
-# ---- ANOVAs for BIS ----
-
-# ANOVA BIS for Task 1
-aov_bis_1 <- aov_ez(
-  id = "ID",
-  dv = "BIS_1",
-  between = "Instruktion",
-  within = "Strategie",
-  data = data_set_rt_er_long
-)
-
-# ANOVA BIS for Task 2
-aov_bis_2 <- aov_ez(
-  id = "ID",
-  dv = "BIS_2",
-  between = "Instruktion",
-  within = "Strategie",
-  data = data_set_rt_er_long
-)
-
-# output results of both ANOVAs of BIS
-aov_bis_1
-aov_bis_2
-
-# saving results as tables
-aov_bis_1$anova_table |>
-  as.data.frame() |>
-  tibble::rownames_to_column(var = "Effekt") |>
-  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
-  gt() |>
-  gtsave("03_data_analysis/results/BIS_1.png")
-aov_bis_2$anova_table |>
-  as.data.frame() |>
-  tibble::rownames_to_column(var = "Effekt") |>
-  mutate(across(where(is.numeric), ~ round(.x, 3))) |>
-  gt() |>
-  gtsave("03_data_analysis/results/BIS_2.png")
 
 
-
-# ========== part 7: post hoc power analysis ==========
+# ========== part 7: post hoc power analysis & partial eta square ==========
 
 # function to output effectsize, power and beta error for alpha-level
 power_from_aov_ez <- function(aov_result, title_of_table, sig_level = 0.05) {
@@ -627,6 +627,4 @@ power_from_aov_ez <- function(aov_result, title_of_table, sig_level = 0.05) {
 # checking values for SAT & BIS
 power_from_aov_ez(aov_accuracy_1, "Genauigkeitstendenz (Aufg. 1)", sig_level = 0.10)
 power_from_aov_ez(aov_accuracy_2, "Genauigkeitstendenz (Aufg. 2)", sig_level = 0.10)
-power_from_aov_ez(aov_bis_1, "BIS (Aufg. 1)", sig_level = 0.10)
-power_from_aov_ez(aov_bis_2, "BIS (Aufg. 2)", sig_level = 0.10)
 
