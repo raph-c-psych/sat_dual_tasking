@@ -466,10 +466,10 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec, legend_pos) {
 # specifying the plots
 plot_specs <- tribble(
   ~var, ~title, ~ylab, ~ylim_vec, ~legend_pos, 
-  "RT1", "A) Reaktionszeit (Auf. 1)", "RT (ms)", c(700, 1650), "none",
-  "RT2", "B) Reaktionszeit (Auf. 2)", "RT (ms)", c(700, 1650), "right",
-  "ER1", "C) Fehlerrate (Auf. 1)", "Error Rate (%)", c(0, 13), "none",
-  "ER2", "D) Fehlerrate (Auf. 2)", "Error Rate (%)", c(0, 13), "right",
+  "RT1", "A) Reaktionszeit (Auf. 1)", "RZ (ms)", c(700, 1650), "none",
+  "RT2", "B) Reaktionszeit (Auf. 2)", "RZ (ms)", c(700, 1650), "right",
+  "ER1", "C) Fehlerrate (Auf. 1)", "FR (%)", c(0, 13), "none",
+  "ER2", "D) Fehlerrate (Auf. 2)", "FR (%)", c(0, 13), "right",
   "BIS_1", "E) Balanced Integration Score (Auf. 1)", "BIS", c(-2.6, 2.6), "none",
   "BIS_2", "F) Balanced Integration Score (Auf. 2)", "BIS", c(-2.6, 2.6), "right",
   "Genauigkeitstendenz_1", "G) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-2.6, 2.6), "none",
