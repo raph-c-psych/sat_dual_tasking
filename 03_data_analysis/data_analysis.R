@@ -325,6 +325,32 @@ data_set_rt_er_long <- data_set_rt_er_long |>
     Genauigkeitstendenz_2 = + z_RT_2 - z_ER_2
   )
 
+# checking descriptive values (divieded by strategy & instruction)
+data_set_rt_er_long |>
+  group_by(Instruktion, Strategie) |>
+  summarise(
+    Genauigkeitstendenz_1 = round(mean(Genauigkeitstendenz_1), 2),
+    Genauigkeitstendenz_2 = round(mean(Genauigkeitstendenz_2), 2)
+  ) |>
+  kable()
+
+# checking descriptive values (divieded by strategy)
+data_set_rt_er_long |>
+  group_by(Strategie) |>
+  summarise(
+    Genauigkeitstendenz_1 = round(mean(Genauigkeitstendenz_1), 2),
+    Genauigkeitstendenz_2 = round(mean(Genauigkeitstendenz_2), 2)
+  ) |>
+  kable()
+
+# checking descriptive values (divieded by instruction)
+data_set_rt_er_long |>
+  group_by(Instruktion) |>
+  summarise(
+    Genauigkeitstendenz_1 = round(mean(Genauigkeitstendenz_1), 2),
+    Genauigkeitstendenz_2 = round(mean(Genauigkeitstendenz_2), 2)
+  ) |>
+  kable()
 
 
 
@@ -390,8 +416,8 @@ summary_data <- data_set_rt_er_long |>
     sd_wert = sd(Wert, na.rm = TRUE),
     n = n(),
     se_wert = sd_wert / sqrt(n),
-    ci_lower = mean_wert - qt(0.95, df = n-1) * se_wert, # 90 %-iges confidende intervall
-    ci_upper = mean_wert + qt(0.95, df = n-1) * se_wert, # 90 %-iges Konfidenzintervall
+    ci_lower = mean_wert - qt(0.975, df = n-1) * se_wert, # 95 %-iges confidende intervall
+    ci_upper = mean_wert + qt(0.975, df = n-1) * se_wert, # 95 %-iges Konfidenzintervall
     .groups = "drop"
   )
 
@@ -470,8 +496,8 @@ plot_specs <- tribble(
   "RT2", "B) Reaktionszeit (Auf. 2)", "RZ (ms)", c(700, 1650), "right",
   "ER1", "C) Fehlerrate (Auf. 1)", "FR (%)", c(0, 13), "none",
   "ER2", "D) Fehlerrate (Auf. 2)", "FR (%)", c(0, 13), "right",
-  "BIS_1", "E) Balanced Integration Score (Auf. 1)", "BIS", c(-2.6, 2.6), "none",
-  "BIS_2", "F) Balanced Integration Score (Auf. 2)", "BIS", c(-2.6, 2.6), "right",
+  "BIS_1", "E) Balanced Integration Score (Auf. 1)", "BIS", c(-3.4, 3.4), "none",
+  "BIS_2", "F) Balanced Integration Score (Auf. 2)", "BIS", c(-3.4, 3.4), "right",
   "Genauigkeitstendenz_1", "G) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-2.6, 2.6), "none",
   "Genauigkeitstendenz_2", "H) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-2.6, 2.6), "right"
 )

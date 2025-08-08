@@ -1,3 +1,5 @@
+# ---- loading packages ----
+
 library(rtdists)
 library(brms)
 library(tidyverse)
@@ -39,6 +41,9 @@ sim_data$response <- as.character(sim_data$response)
 # splitting data set
 group_low <- subset(sim_data, condition == "low")
 group_high <- subset(sim_data, condition == "high")
+
+# removing excess data
+rm(a, n_subj, n_trials, s_0, s_1, t0, v, z)
 
 
 # ------ estimate all parameters other than noise s -----

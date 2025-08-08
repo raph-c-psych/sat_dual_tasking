@@ -1,3 +1,14 @@
+# This file is licenced under the MIT licence
+
+# Copyright 2025 Aleks Pieczykolan
+#
+# Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the “Software”), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+#    
+# The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+#
+# THE SOFTWARE IS PROVIDED “AS IS”, WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+
+
 # ========== Verarbeitung der Daten aus EmPra Pieczykolan ==========
 
 # ---- Autoren ----
@@ -161,6 +172,9 @@ dataRT <- dataRT |>
 # relevante Spalten auswählen
 dataRT <- dataRT |>
     select(participantID, UV_Instruk, Reihenfolge, UV_Strategie, UV_komp, RT1, RT2, FehlerR1, FehlerR2)
+
+# Datensatz exportieren mit rohen Trial-Daten für DDM
+write.csv(dataRT, "../data_sets_empra/data_raph/raw_trial_data.csv")
 
 
 
