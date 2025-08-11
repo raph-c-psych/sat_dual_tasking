@@ -518,7 +518,7 @@ overview_plot <-
   (all_plots[[7]] | all_plots[[8]])
 
 # saving overview plot
-plot_path_overview <- "03_data_analysis/overview_plot.jpg"
+plot_path_overview <- "03_data_analysis/results/overview_plot.jpg"
 ggsave(
   filename = plot_path_overview,
   plot = overview_plot,

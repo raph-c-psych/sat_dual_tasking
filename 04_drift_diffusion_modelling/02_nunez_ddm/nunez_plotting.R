@@ -7,7 +7,7 @@ library(patchwork)
 
 # ---- loading data sets ----
 
-# loading the plotting tim
+# loading the plotting time
 plottime <- read_csv("04_drift_diffusion_modelling/02_nunez_ddm/exports/plottime.csv")
 
 # loading the random walk data
@@ -125,6 +125,7 @@ plot_ddm_trajectories <- function(data, results, title_text, noise_level, a = 1.
 }
 
 
+
 # ---- creating and exporting plots ----
 
 # create plots per condition
@@ -135,16 +136,16 @@ p3 <- plot_ddm_trajectories(data_low, results_low, noise_level = 0.4, "C) DDM mi
 # stack plots vertically into one
 combined_plot <- p1 / plot_spacer() / p2 / plot_spacer() / p3 + plot_layout(heights = c(1, 0.075, 1, 0.075, 1))
 
-
 # export plot
 ggsave(
   filename = "04_drift_diffusion_modelling/02_nunez_ddm/nunez_ddm.jpg",
   plot = combined_plot,
-  width = 16,     # adjust width and height as needed
+  width = 16,
   height = 20,
-  dpi = 300       # high resolution
+  dpi = 300
 )
 
+# open plot
 system("open 04_drift_diffusion_modelling/02_nunez_ddm/nunez_ddm.jpg")
 
 

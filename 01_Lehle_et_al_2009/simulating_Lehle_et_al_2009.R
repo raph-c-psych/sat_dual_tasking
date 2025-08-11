@@ -108,104 +108,9 @@ sim_data |>
 
 
 
+# ========= plot: visualizing scores (rSATS & BIS) and changes in accuracy  =========
 
-# ========= plot: visualizing scores (BIS & SAT) on task 1 =========
-
-score_plot <- ggplot(data = sim_data) + 
-  # scatter plot of data
-  geom_point(
-    aes(x = scale(RT_1), y = scale(ER_1), shape = strategy),
-    color = "black",
-    size = 3.5,
-    alpha = 0.5
-  ) +
-  
-  # vectors and their annotation
-  geom_segment(
-    aes(x = 2.8, y = 2.8, xend = -2.8, yend = -2.8),
-    arrow = arrow(length = unit(1, "cm")),
-    size = 1.3,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  geom_segment(
-    aes(x = - 2.8, y = 2.8, xend = 2.8, yend =  -2.8),
-    arrow = arrow(length = unit(1, "cm")),
-    size = 1.3,
-    color = "black",
-    linetype = "dashed"
-  ) +
-  annotate("text", x = -1.7, y = -1.1, label = "Leistung (BIS)",  hjust = 1.1, vjust = 1.1, size = 9, angle = 45) +
-  annotate("text", x = 3, y =  -2.7, label = "Genauigkeitstendenz (rSATS)",   hjust = 1.1, vjust = -0.1, size = 9, angle = -45) +
-
-  # Labeling of axis and legend
-  labs(
-    x = "Reaktionszeit (z-standardisiert)", 
-    y = "Fehlerrate (z-standardisiert)", 
-    shape = "Strategie"
-  ) +
-  
-  # scaling axis to be the same and setting ticks
-  coord_fixed(ratio = 1) +
-  scale_x_continuous(
-  limits = c(-3, 3),
-  breaks = seq(-3, 3, by = 1)
-  ) +
-  scale_y_continuous(
-    limits = c(-3, 3),
-    breaks = seq(-3, 3, by = 1)
-  ) +
-  
-  # setting theme
-  theme_minimal() +
-  theme(
-    # background
-    panel.background  = element_rect(fill = "white", color = NA),
-    plot.background   = element_rect(fill = "white", color = NA),
-    panel.grid        = element_blank(),
-    
-    # keep standard axis
-    axis.line         = element_line(color = "black", size = 1),
-    
-    # sizing of elements
-    plot.title = element_text(size = 30, face = "bold", color = "black", hjust = 0.5),
-    axis.title.x      = element_text(size = 26, face = "bold", color = "black"),
-    axis.title.y      = element_text(size = 26, face = "bold", color = "black"),
-    axis.text         = element_text(size = 26, color = "black"),
-    legend.title      = element_text(size = 26, face = "bold", color = "black"),
-    legend.text       = element_text(size = 26, color = "black"),
-    axis.ticks        = element_line(size = 1, color = "black"),
-
-    # add arrow heads to the axis lines
-    axis.line.x = element_line(
-      color = "black",
-      arrow = arrow(length = unit(0.7, "cm"))
-    ),
-    axis.line.y = element_line(
-      color = "black",
-      arrow = arrow(length = unit(0.7, "cm"))
-    ),
-    panel.border = element_blank()
-  )
-
-# saving plot
-plot_path <- paste0("01_Lehle_et_al_2009/plots/01_score_visualization.jpg")
-ggsave(
-  filename = plot_path,
-  plot = score_plot,
-  width = 13,    # in inches 
-  height = 10,    
-  dpi = 300      # resolution
-)
-
-# Open the plot (macOS command)
-system2("open", args = shQuote(plot_path))
-
-
-
-# ========= plot: visualizing changes in accuracy  =========
-
-accuracy_change_plot <- ggplot(data = sim_data) + 
+rsats_bis_visualisation <- ggplot(data = sim_data) + 
   # scatter plot of data
   geom_point(
     aes(x = scale(RT_1), y = scale(ER_1), shape = strategy),
@@ -340,10 +245,10 @@ accuracy_change_plot <- ggplot(data = sim_data) +
   )
 
 # saving plot
-plot_path <- paste0("01_Lehle_et_al_2009/plots/02_accuracy_change_visualization.jpg")
+plot_path <- paste0("01_Lehle_et_al_2009/plots/01_rsats_bis_visualisation.jpg")
 ggsave(
   filename = plot_path,
-  plot = accuracy_change_plot,
+  plot = rsats_bis_visualisation,
   width = 13,    # in inches 
   height = 10,    
   dpi = 300      # resolution
@@ -478,7 +383,7 @@ final_dashboard <-
   (all_plots[[7]] | all_plots[[8]])
 
 # saving plot
-plot_path <- "01_Lehle_et_al_2009/plots/03_lehle_visualization.jpg"
+plot_path <- "01_Lehle_et_al_2009/plots/02_lehle_visualization.jpg"
 ggsave(
   filename = plot_path,
   plot = final_dashboard,

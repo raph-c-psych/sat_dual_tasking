@@ -1,6 +1,11 @@
+# ---- loading packages ----
+
 library(ggplot2)
 
-# DDM simulation function
+
+
+# ---- DDM simulation function ----
+
 simulate_ddm <- function(v = 0.3, a = 1.0, z = 0.5, t0 = 0.3,
                          s = 0.1, dt = 0.01, max_time = 2.0) {
   z <- z * a
@@ -35,7 +40,10 @@ simulate_ddm <- function(v = 0.3, a = 1.0, z = 0.5, t0 = 0.3,
   return(list(rt = max_time, choice = NA, traj = full_traj))
 }
 
-# Simulate multiple DDMs for a given noise level
+
+
+# ---- function for simulating multiple DDMs at once ----
+
 simulate_multiple_ddm <- function(noise_level, num_sim = 10, v = 0.45, a = 1, z = 0.5, t0 = 0.3, dt = 0.01, max_time = 2) {
   trials <- list()
   rts <- numeric(num_sim)
@@ -65,13 +73,17 @@ simulate_multiple_ddm <- function(noise_level, num_sim = 10, v = 0.45, a = 1, z 
   return(trial_data)
 }
 
-# Simulate 3 conditions
+
+# ---- create plot for visualization ----
+
+# set seed for reproducability
 set.seed(24)
 
+# simulate 5 trials
 ddm_data <- simulate_multiple_ddm(noise_level = 0.6, num_sim = 5)
 
 
-# Plot
+# function for plot
 plot_ddm_trajectories <- function(data, a = 1.0) {
 
   # Plot
@@ -147,16 +159,10 @@ visualization_plot <- plot_ddm_trajectories(ddm_data)
 ggsave(
   filename = "04_drift_diffusion_modelling/01_visualization_of_ddm/visualization_ddm.jpg",
   plot = visualization_plot,
-  width = 16,     # adjust width and height as needed
+  width = 16,
   height = 10,
-  dpi = 300       # high resolution
+  dpi = 300
 )
 
+# open plot
 system("open 04_drift_diffusion_modelling/01_visualization_of_ddm/visualization_ddm.jpg")
-
-
-    # Non-decision time Ter
-#    annotate("segment", x = 0.01, xend = 0.29, y = 0.5, yend = 0.5, size = 1.2) +
-#    annotate("segment", x = 0.01, xend = 0.01, y = 0.47, yend = 0.53, size = 1.2) + # left tick
-#    annotate("segment", x = 0.29, xend = 0.29, y = 0.47, yend = 0.53, size = 1.2) + # right tick
-#    annotate("text", x = 0.15, y = -0.12, label = "Ter", size = 7, fontface = "bold") # label Ter
