@@ -10,7 +10,9 @@
 ## License
 This project is licensed under the [MIT License](LICENSE).
 
-## 1. Simulation of SAT from Study Lehle et al., 2009 (01_Lehle_et_al_2009)
+## Content 
+
+### 1. Simulation of SAT from Study Lehle et al., 2009 (01_Lehle_et_al_2009)
 
 **Refrence**:
 Lehle, C., Steinhauser, M., & Hübner, R. (2009). Serial or parallel processing in dual tasks: What is more effortful? *Psychophysiology*, 46(3), 502–509. https://doi.org/10.1111/j.1469-8986.2009.00806.x
@@ -20,16 +22,14 @@ Lehle, C., Steinhauser, M., & Hübner, R. (2009). Serial or parallel processing 
 - **simulating_Lehle_et_al_2009.R:** contains the code for simulating the data and generating related plots
 - **plots \[folder\]:** contains plots visualizing Speed-Accuracy Trade-Off and Balanced Integration Score for the study of Lehle et al., 2009 and the plot showing the reactions times, error rates, BIS (Balanced Integration Score) and rSATS (relative speed-accuracy trade-off score)
 
-## 2. Processing Data from current sutdy (02_processing_data)
+### 2. Processing Data from current sutdy (02_processing_data)
 
 **Files:**
 
 - **raph_processing.R:** File for processing the data, based upon script by Dr. Pieczykolan
 - (data sets are stored in external folder for privacy reasons)
 
-
-
-## 3. Data Analysis of SAT (03_data_analysis)
+### 3. Data Analysis of SAT (03_data_analysis)
 
 **Files:**
 
@@ -37,7 +37,7 @@ Lehle, C., Steinhauser, M., & Hübner, R. (2009). Serial or parallel processing 
 - **results \[folder\]:** contains the results of the statistical analysis and the visualizations of the rSATS of the experiment
 
 
-## 4. Drift Diffusion Modelling (DDM) of Interference (04_drift_diffusion_modeeling)
+### 4. Drift Diffusion Modelling (DDM) of Interference (04_drift_diffusion_modeeling)
 
 **Files:**
 
