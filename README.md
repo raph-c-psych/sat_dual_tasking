@@ -7,6 +7,10 @@
 - **Supervisor:** Dr. Aleks Pieczykolan
 - **Author:** Raphael Christmann
 
+## Theoretical Background
+
+Multitasking research in experimental psychology is often viewed at from the lense of performance. In the associated paper the author aims at establishing research also from the perspective of the speed-accuracy trade-off (SAT). Therefore a new score to quantify the relative SAT between groups is introduced - called relative speed-accuracy trade-off score (rSATS). The effect of serial (vs. parallel) processing and spatial inhibition of distracting stimuli on reducing interference is discussed and the effect of interference on SAT modelled via drift diffusion modelling.
+
 ## License
 This project is licensed under the [MIT License](LICENSE).
 
