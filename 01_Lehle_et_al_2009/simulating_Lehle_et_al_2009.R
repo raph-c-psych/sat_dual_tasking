@@ -17,7 +17,7 @@ library(grid)
 # confidence intervall parallel incongruent: RT1 965-910 = 55; ER1 6.8 - 5.8 = 1.0; RT2 1260 - 1195 = 65; ER2 7.3 - 6.3 = 1.0
 
 original_data <- tribble(
-  ~strategy, ~congruency,   ~RT_1_mean, ~ER_1_mean, ~RT_2_mean, ~ER_2_mean, ~RT_1_hw, ~ER_1_hw, ~RT_2_hw, ~ER_2_hw,
+  ~strategy, ~congruency,   ~RT_1_mean, ~ER_1_mean, ~RT_2_mean, ~ER_2_mean, ~RT_1_se, ~ER_1_se, ~RT_2_se, ~ER_2_se,
   "seriell",     "congruent",   730, 1.8, 1100, 3.65, 25, 0.5, 35, 0.45,
   "seriell",     "incongruent",   795, 3.2, 1150, 2.5, 45, 0.5, 50, 0.5,
   "parallel",     "congruent",   785, 1.2, 1025, 3.1, 25, 0.1, 50, 0.4,
@@ -33,10 +33,10 @@ t_value_95 <- 1.96
 
 original_data <- original_data |>
   mutate(
-    RT_1_sd = RT_1_hw * sqrt(n_participants) / t_value_95,
-    ER_1_sd = ER_1_hw * sqrt(n_participants) / t_value_95,
-    RT_2_sd = RT_2_hw * sqrt(n_participants) / t_value_95,
-    ER_2_sd = ER_2_hw * sqrt(n_participants) / t_value_95,
+    RT_1_sd = RT_1_se * sqrt(n_participants),
+    ER_1_sd = ER_1_se * sqrt(n_participants),
+    RT_2_sd = RT_2_se * sqrt(n_participants),
+    ER_2_sd = ER_2_se * sqrt(n_participants),
     .keep = "unused"
   )
 rm(t_value_95)

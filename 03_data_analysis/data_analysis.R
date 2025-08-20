@@ -325,12 +325,15 @@ data_set_rt_er_long <- data_set_rt_er_long |>
     Genauigkeitstendenz_2 = + z_RT_2 - z_ER_2
   )
 
+
 # checking descriptive values (divieded by strategy & instruction)
 data_set_rt_er_long |>
   group_by(Instruktion, Strategie) |>
   summarise(
-    Genauigkeitstendenz_1 = round(mean(Genauigkeitstendenz_1), 2),
-    Genauigkeitstendenz_2 = round(mean(Genauigkeitstendenz_2), 2)
+    mean_Genauigkeitstendenz_1 = mean(Genauigkeitstendenz_1, na.rm = TRUE),
+    sd_Genauigkeitstendenz_1   = sd(Genauigkeitstendenz_1, na.rm = TRUE),
+    mean_Genauigkeitstendenz_2 = mean(Genauigkeitstendenz_2, na.rm = TRUE),
+    sd_Genauigkeitstendenz_2   = sd(Genauigkeitstendenz_2, na.rm = TRUE),
   ) |>
   kable()
 
@@ -338,8 +341,10 @@ data_set_rt_er_long |>
 data_set_rt_er_long |>
   group_by(Strategie) |>
   summarise(
-    Genauigkeitstendenz_1 = round(mean(Genauigkeitstendenz_1), 2),
-    Genauigkeitstendenz_2 = round(mean(Genauigkeitstendenz_2), 2)
+    mean_Genauigkeitstendenz_1 = mean(Genauigkeitstendenz_1, na.rm = TRUE),
+    sd_Genauigkeitstendenz_1   = sd(Genauigkeitstendenz_1, na.rm = TRUE),
+    mean_Genauigkeitstendenz_2 = mean(Genauigkeitstendenz_2, na.rm = TRUE),
+    sd_Genauigkeitstendenz_2   = sd(Genauigkeitstendenz_2, na.rm = TRUE),
   ) |>
   kable()
 
@@ -347,8 +352,10 @@ data_set_rt_er_long |>
 data_set_rt_er_long |>
   group_by(Instruktion) |>
   summarise(
-    Genauigkeitstendenz_1 = round(mean(Genauigkeitstendenz_1), 2),
-    Genauigkeitstendenz_2 = round(mean(Genauigkeitstendenz_2), 2)
+    mean_Genauigkeitstendenz_1 = mean(Genauigkeitstendenz_1, na.rm = TRUE),
+    sd_Genauigkeitstendenz_1   = sd(Genauigkeitstendenz_1, na.rm = TRUE),
+    mean_Genauigkeitstendenz_2 = mean(Genauigkeitstendenz_2, na.rm = TRUE),
+    sd_Genauigkeitstendenz_2   = sd(Genauigkeitstendenz_2, na.rm = TRUE),
   ) |>
   kable()
 
@@ -416,14 +423,12 @@ summary_data <- data_set_rt_er_long |>
     sd_wert = sd(Wert, na.rm = TRUE),
     n = n(),
     se_wert = sd_wert / sqrt(n),
-    ci_lower = mean_wert - qt(0.975, df = n-1) * se_wert, # 95 %-iges confidende intervall
-    ci_upper = mean_wert + qt(0.975, df = n-1) * se_wert, # 95 %-iges Konfidenzintervall
     .groups = "drop"
   )
 
 
 # function for creating individual plots
-make_metric_plot <- function(data, var, title, ylab, ylim_vec, legend_pos) {
+make_metric_plot <- function(data, var, title, ylab, ylim_vec, legend_pos, ybreaks) {
   # basic plot
   p <- data |> 
     filter(Variable == var) |>
@@ -432,7 +437,7 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec, legend_pos) {
                          shape = Instruktion,
                          group = Instruktion)) +
     geom_point(position = position_dodge(width = 0.1), size = 3) +
-    geom_errorbar(aes(ymin = ci_lower, ymax = ci_upper),
+    geom_errorbar(aes(ymin = mean_wert - se_wert, ymax = mean_wert + se_wert),
                 position = position_dodge(width = 0.1),
                 width = 0.1) +
     geom_line(position = position_dodge(width = 0.1), size = 0.8)
@@ -441,11 +446,14 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec, legend_pos) {
   if (ylim_vec[1] == 0) {
     p <- p + scale_y_continuous(
       limits = ylim_vec,
+      breaks = seq(ylim_vec[1], ylim_vec[2], by = ybreaks),
       expand = expansion(mult = c(0, 0), add = c(0, 1))
     )
   } else {
     p <- p + scale_y_continuous(
-      limits = ylim_vec
+      limits = ylim_vec,
+      breaks = seq(ylim_vec[1], ylim_vec[2], by = ybreaks),
+      expand = expansion(mult = c(0.15))
     )
   }
   
@@ -491,22 +499,22 @@ make_metric_plot <- function(data, var, title, ylab, ylim_vec, legend_pos) {
 
 # specifying the plots
 plot_specs <- tribble(
-  ~var, ~title, ~ylab, ~ylim_vec, ~legend_pos, 
-  "RT1", "A) Reaktionszeit (Auf. 1)", "RZ (ms)", c(700, 1650), "none",
-  "RT2", "B) Reaktionszeit (Auf. 2)", "RZ (ms)", c(700, 1650), "right",
-  "ER1", "C) Fehlerrate (Auf. 1)", "FR (%)", c(0, 13), "none",
-  "ER2", "D) Fehlerrate (Auf. 2)", "FR (%)", c(0, 13), "right",
-  "BIS_1", "E) Balanced Integration Score (Auf. 1)", "BIS", c(-3.4, 3.4), "none",
-  "BIS_2", "F) Balanced Integration Score (Auf. 2)", "BIS", c(-3.4, 3.4), "right",
-  "Genauigkeitstendenz_1", "G) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-2.6, 2.6), "none",
-  "Genauigkeitstendenz_2", "H) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-2.6, 2.6), "right"
+  ~var, ~title, ~ylab, ~ylim_vec, ~legend_pos, ~ybreaks,
+  "RT1", "A) Reaktionszeit (Auf. 1)", "RZ (ms)", c(800, 1300), "none", 100,
+  "RT2", "B) Reaktionszeit (Auf. 2)", "RZ (ms)", c(1000, 1500), "right", 100,
+  "ER1", "C) Fehlerrate (Auf. 1)", "FR (%)", c(0, 10), "none", 2.5,
+  "ER2", "D) Fehlerrate (Auf. 2)", "FR (%)", c(0, 10), "right", 2.5,
+  "BIS_1", "E) Balanced Integration Score (Auf. 1)", "BIS", c(-2, 2), "none", 1,
+  "BIS_2", "F) Balanced Integration Score (Auf. 2)", "BIS", c(-2, 2), "right", 1,
+  "Genauigkeitstendenz_1", "G) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-1.5, 1.5), "none", 0.5,
+  "Genauigkeitstendenz_2", "H) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-1.5, 1.5), "right", 0.5
 )
 
 # creating all the plots
 all_plots <- purrr::pmap(
   plot_specs,
-  function(var, title, ylab, ylim_vec, legend_pos) {
-    make_metric_plot(summary_data, var, title, ylab, ylim_vec, legend_pos)
+  function(var, title, ylab, ylim_vec, legend_pos, ybreaks) {
+    make_metric_plot(summary_data, var, title, ylab, ylim_vec, legend_pos, ybreaks)
   }
 )
 
@@ -535,16 +543,16 @@ system2("open", args = shQuote(plot_path_overview))
 
 # specifying the plots
 plot_specs_sat <- tribble(
-  ~var, ~title, ~ylab, ~ylim_vec, ~legend_pos, 
-  "Genauigkeitstendenz_1", "A) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-2.6, 2.6), "none",
-  "Genauigkeitstendenz_2", "B) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-2.6, 2.6), "right"
+  ~var, ~title, ~ylab, ~ylim_vec, ~legend_pos, ~ybreaks,
+  "Genauigkeitstendenz_1", "G) Genauigkeitstendenz (Auf. 1)", "rSATS", c(-1.5, 1.5), "none", 0.5,
+  "Genauigkeitstendenz_2", "H) Genauigkeitstendenz (Auf. 2)", "rSATS", c(-1.5, 1.5), "right", 0.5
 )
 
 # creating all the plots
 plots_sat <- purrr::pmap(
   plot_specs_sat,
-  function(var, title, ylab, ylim_vec, legend_pos) {
-    make_metric_plot(summary_data, var, title, ylab, ylim_vec, legend_pos)
+  function(var, title, ylab, ylim_vec, legend_pos, ybreaks) {
+    make_metric_plot(summary_data, var, title, ylab, ylim_vec, legend_pos, ybreaks)
   }
 )
 
